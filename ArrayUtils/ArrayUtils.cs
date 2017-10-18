@@ -6,7 +6,59 @@ namespace ArrayUtils
     {
         public static void QuickSort(int[] array)
         {
-            // TODO
+            if (array == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (array.Length == 0)
+            {
+                return;
+            }
+
+            RecursiveQuickSort(array, 0, array.Length - 1);
+        }
+
+        // Sorts part of an array [leftIndex; rightIndex] recursively using quick sort.
+        private static void RecursiveQuickSort(int[] array, int leftIndex, int rightIndex)
+        {
+            int currentLeftIndex = leftIndex;
+            int currentRightIndex = rightIndex;
+
+            int middleElement = array[(leftIndex + rightIndex) / 2];
+
+            do
+            {
+                while (array[currentLeftIndex] < middleElement)
+                {
+                    currentLeftIndex++;
+                }
+
+                while (array[currentRightIndex] > middleElement)
+                {
+                    currentRightIndex--;
+                }
+
+                if (currentLeftIndex <= currentRightIndex)
+                {
+                    int temp = array[currentLeftIndex];
+                    array[currentLeftIndex] = array[currentRightIndex];
+                    array[currentRightIndex] = temp;
+
+                    currentLeftIndex++;
+                    currentRightIndex--;
+                }
+            } while (currentLeftIndex <= currentRightIndex);
+
+            if (currentRightIndex > leftIndex)
+            {
+                RecursiveQuickSort(array, leftIndex, currentRightIndex);
+            }
+
+            if (currentLeftIndex < rightIndex)
+            {
+                RecursiveQuickSort(array, currentLeftIndex, rightIndex);
+            }
         }
 
         public static void MergeSort(int[] array)
@@ -16,11 +68,11 @@ namespace ArrayUtils
                 throw new ArgumentNullException();
             }
 
-            RecursiveMerge(array, 0, array.Length);
+            RecursiveMergeSort(array, 0, array.Length);
         }
 
-        // Sorts part of an array [leftIndex; rightIndex) recursively.
-        private static void RecursiveMerge(int[] array, int leftIndex, int rightIndex)
+        // Sorts part of an array [leftIndex; rightIndex) recursively using merge sort.
+        private static void RecursiveMergeSort(int[] array, int leftIndex, int rightIndex)
         {
             if (leftIndex + 1 >= rightIndex)
             {
@@ -29,8 +81,8 @@ namespace ArrayUtils
 
             int middleIndex = (rightIndex + leftIndex) / 2;
 
-            RecursiveMerge(array, leftIndex, middleIndex);
-            RecursiveMerge(array, middleIndex, rightIndex);
+            RecursiveMergeSort(array, leftIndex, middleIndex);
+            RecursiveMergeSort(array, middleIndex, rightIndex);
 
             Merge(array, leftIndex, middleIndex, rightIndex);
         }
